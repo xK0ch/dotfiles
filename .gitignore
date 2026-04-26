@@ -1,0 +1,15 @@
+# Backups created by install.sh
+*.backup.*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Editor swap files
+*.swp
+*.swo
+*~
+
+# IDE folders
+.idea/
+.vscode/
