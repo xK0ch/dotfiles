@@ -1,26 +1,29 @@
 # dotfiles
 
-My personal config files, version-controlled. Cloning this repo and running the install script gets a new machine into my preferred state.
+My personal config files, version-controlled. Clone this repo and run `install.sh` to get a new machine into my preferred state.
 
 ## What's in here
 
-| Path in repo | Installed to |
+| Path in repo | Purpose |
 |---|---|
-| `claude/CLAUDE.md` | `~/.claude/CLAUDE.md` |
+| `claude/CLAUDE.md` | Claude Code preferences, installed to `~/.claude/CLAUDE.md` |
+| `arch/setup.sh` | Arch Linux package installation and system setup |
+| `arch/config/MangoHud/MangoHud.conf` | MangoHud overlay config, installed to `~/.config/MangoHud/` |
 
 ## Install on a new machine
 
 ```bash
-git clone <repo-url> ~/dotfiles
+git clone https://github.com/xK0ch/dotfiles ~/dotfiles
 cd ~/dotfiles
 ./install.sh
 ```
 
-The install script:
+`install.sh` is always the entry point:
 
-- Works on Linux, macOS, and Windows (via Git Bash).
-- Backs up any existing file before overwriting it (look for `*.backup.YYYYMMDD-HHMMSS` next to the target).
-- Is idempotent, safe to re-run anytime.
+- Deploys all dotfiles to their target locations (Linux, macOS, Windows via Git Bash).
+- On Arch Linux: also prompts whether to run `arch/setup.sh`, which installs all packages and enables services.
+- Backs up existing files before overwriting (look for `*.backup.YYYYMMDD-HHMMSS` next to the target).
+- Idempotent, safe to re-run anytime.
 
 ## Updating a config
 
@@ -30,7 +33,7 @@ The install script:
 
 ## Adding a new dotfile
 
-1. Drop the file into a new subfolder (e.g. `vim/.vimrc`).
+1. Drop the file into a subfolder (e.g. `vim/.vimrc`).
 2. Add an `install_file` line at the bottom of `install.sh`.
 3. Run `./install.sh` to test, then commit.
 

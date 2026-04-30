@@ -69,4 +69,15 @@ install_file "claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
 # esac
 
 echo
+
+# ---------- arch linux setup ----------
+
+if [[ "$OS" == "linux" ]] && command -v pacman &>/dev/null && [[ -f "arch/setup.sh" ]]; then
+  echo "Arch Linux detected."
+  read -r -p "Run arch/setup.sh to install packages and enable services? [y/N] " run_arch
+  if [[ "${run_arch,,}" == "y" ]]; then
+    bash arch/setup.sh
+  fi
+fi
+
 echo "Done."
