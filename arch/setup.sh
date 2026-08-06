@@ -8,6 +8,12 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 step() { echo; echo "==> $*"; }
 
+# ---------- prerequisites ----------
+
+step "Installing build prerequisites"
+# Needed to clone the AUR repo and compile yay with makepkg.
+sudo pacman -S --needed --noconfirm base-devel git
+
 # ---------- yay ----------
 
 step "Installing yay"
@@ -41,7 +47,7 @@ PKGS_IPHONE=(
 )
 
 PKGS_GAMING=(
-  mangohud minecraft-launcher teamspeak3 gamescope lact lib32-vulkan-radeon
+  mangohud minecraft-launcher teamspeak gamescope lact lib32-vulkan-radeon
 )
 
 PKGS_DEV=(
