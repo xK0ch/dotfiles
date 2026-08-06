@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 #
-# install.sh: copies dotfiles into their target locations.
+# install.sh: interactively install selected dotfile components.
 # Safe to re-run, existing files are backed up before being overwritten.
-#
-# Works on Linux, macOS, and Windows (via Git Bash).
 
 set -euo pipefail
 
@@ -11,15 +9,6 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
 # ---------- helpers ----------
-
-detect_os() {
-  case "$OSTYPE" in
-    linux*)             echo "linux"   ;;
-    darwin*)            echo "macos"   ;;
-    msys*|cygwin*|win*) echo "windows" ;;
-    *)                  echo "unknown" ;;
-  esac
-}
 
 install_file() {
   local src="$1"
@@ -45,39 +34,52 @@ install_file() {
   echo "                  ->  $dest"
 }
 
-# ---------- main ----------
+# ---------- components ----------
 
-OS=$(detect_os)
-echo "Installing dotfiles (detected OS: $OS)"
+install_claude() {
+  echo "==> Installing Claude config"
+  install_file "claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
+}
+
+install_arch() {
+  echo "==> Running Arch setup"
+  bash arch/setup.sh
+}
+
+# ---------- selection ----------
+
+echo "Which components do you want to install?"
 echo
-
-# Files that live at the same path on every OS:
-install_file "claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
-
-# When you add OS-specific files later, branch like this:
-#
-# case "$OS" in
-#   linux)
-#     install_file "vscode/settings.json" "$HOME/.config/Code/User/settings.json"
-#     ;;
-#   macos)
-#     install_file "vscode/settings.json" "$HOME/Library/Application Support/Code/User/settings.json"
-#     ;;
-#   windows)
-#     install_file "vscode/settings.json" "$APPDATA/Code/User/settings.json"
-#     ;;
-# esac
-
+echo "  1) claude  - Claude Code config (claude/CLAUDE.md)"
+echo "  2) arch    - Arch Linux packages & services (arch/setup.sh)"
 echo
+read -r -p "Select (e.g. '1', '2', '1 2', or 'a' for all): " -a choices
 
-# ---------- arch linux setup ----------
+want_claude=false
+want_arch=false
 
-if [[ "$OS" == "linux" ]] && command -v pacman &>/dev/null && [[ -f "arch/setup.sh" ]]; then
-  echo "Arch Linux detected."
-  read -r -p "Run arch/setup.sh to install packages and enable services? [y/N] " run_arch
-  if [[ "${run_arch,,}" == "y" ]]; then
-    bash arch/setup.sh
-  fi
+if [[ ${#choices[@]} -eq 0 ]]; then
+  echo "Nothing selected. Exiting."
+  exit 0
 fi
 
+for c in "${choices[@]}"; do
+  case "${c,,}" in
+    1|claude)  want_claude=true ;;
+    2|arch)    want_arch=true ;;
+    a|all)     want_claude=true; want_arch=true ;;
+    *)         echo "  Ignoring unknown selection: $c" ;;
+  esac
+done
+
+if ! $want_claude && ! $want_arch; then
+  echo "Nothing selected. Exiting."
+  exit 0
+fi
+
+echo
+if $want_claude; then install_claude; fi
+if $want_arch; then install_arch; fi
+
+echo
 echo "Done."

@@ -20,8 +20,10 @@ cd ~/dotfiles
 
 `install.sh` is always the entry point:
 
-- Deploys all dotfiles to their target locations (Linux, macOS, Windows via Git Bash).
-- On Arch Linux: also prompts whether to run `arch/setup.sh`, which installs all packages and enables services.
+- Prompts which components to install. Pick one or several:
+  - `claude` deploys the Claude Code config (`claude/CLAUDE.md`).
+  - `arch` runs `arch/setup.sh`, which installs all packages and enables services (Arch Linux only).
+- Enter numbers or names (e.g. `1`, `2`, `1 2`, `claude arch`), or `a` for all.
 - Backs up existing files before overwriting (look for `*.backup.YYYYMMDD-HHMMSS` next to the target).
 - Idempotent, safe to re-run anytime.
 
@@ -34,10 +36,8 @@ cd ~/dotfiles
 ## Adding a new dotfile
 
 1. Drop the file into a subfolder (e.g. `vim/.vimrc`).
-2. Add an `install_file` line at the bottom of `install.sh`.
+2. Add an `install_file` line inside the matching component function in `install.sh` (e.g. `install_claude`), or add a new component function plus an entry in the selection menu.
 3. Run `./install.sh` to test, then commit.
-
-For configs whose location differs per OS (like VSCode settings), use the `case "$OS" in ... esac` template that's commented out in `install.sh`.
 
 ## Why copy instead of symlink?
 
