@@ -29,14 +29,14 @@ yay --answerclean All --answerdiff None --save && sed -i 's/"doubleconfirm": tru
 # ---------- packages ----------
 
 PKGS_UI=(
-  klassy papirus-icon-theme kdegraphics-thumbnailers kimageformats
-  qt6-imageformats kdesdk-thumbnailers ffmpegthumbs taglib
-  kde-thumbnailer-apk icoutils libappimage gwenview libheif
+  kate dolphin ark kdegraphics-thumbnailers kimageformats libheif qt6-imageformats
+  kdesdk-thumbnailers ffmpegthumbs taglib icoutils libappimage kio-extras resvg
+  okular gwenview klassy papirus-icon-theme
 )
 
 PKGS_UTILITY=(
   bitwarden fastfetch firefox libreoffice-still filezilla kcalc
-  isoimagewriter okular firewalld hunspell hunspell-de hunspell-en_us
+  isoimagewriter hunspell hunspell-de hunspell-en_us
   rsync partitionmanager dosfstools exfatprogs
 )
 
@@ -65,7 +65,6 @@ yay -S --needed --noconfirm "${PKGS_UI[@]}"
 
 step "Installing utility packages"
 yay -S --needed --noconfirm "${PKGS_UTILITY[@]}"
-sudo systemctl enable --now firewalld.service
 
 step "Installing iPhone support"
 yay -S --needed --noconfirm "${PKGS_IPHONE[@]}"
@@ -73,6 +72,7 @@ yay -S --needed --noconfirm "${PKGS_IPHONE[@]}"
 step "Installing gaming packages"
 yay -S --needed steam
 yay -S --needed --noconfirm "${PKGS_GAMING[@]}"
+sudo systemctl enable --now lactd
 
 step "Installing development tools"
 yay -S --needed --noconfirm "${PKGS_DEV[@]}"
