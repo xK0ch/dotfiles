@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-# Arch Linux post-install setup.
-# Run once after a fresh Arch install with KDE Plasma.
 
 set -euo pipefail
 
@@ -49,7 +47,7 @@ PKGS_GAMING=(
 )
 
 PKGS_DEV=(
-  jdk25-openjdk jetbrains-toolbox nvm docker docker-compose github-cli
+  jdk25-openjdk jetbrains-toolbox nvm docker docker-compose github-cli claude-desktop
 )
 
 PKGS_PRINTER=(
