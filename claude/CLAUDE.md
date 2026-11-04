@@ -9,9 +9,10 @@
 
 ## Code style
 
-- Never write comments, neither in code nor in configuration files (YAML, Dockerfiles, Jenkinsfiles, shell scripts, CSS and SCSS, HTML templates and similar). This includes doc comments.
+- Never write comments in files that belong to a software project: source code, scripts, build, CI and deployment files (Dockerfiles, compose files, Jenkinsfiles and similar), project configuration (YAML, JSON, package or framework config), CSS and SCSS, HTML templates. This includes doc comments.
 - Write code that explains itself instead: descriptive names for variables, functions, classes and files, and small well-named functions or constants wherever logic would otherwise need an explanation.
-- Do not add comments when editing existing files. Leave existing comments in place unless the user asks to remove them.
+- Exception: personal settings files for programs on the user's own machine, such as the config files in a dotfiles repo (for example `MangoHud.conf`, shell, editor or terminal settings). They are opened and tweaked by hand, so comments that label sections or explain options are welcome there. Never remove them.
+- Do not add comments when editing existing project files. Leave existing comments in place unless the user asks to remove them.
 - Lines that tools need to work, such as a shebang or a linter directive, are not comments in this sense.
 
 ## Shell commands

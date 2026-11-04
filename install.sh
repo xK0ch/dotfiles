@@ -4,6 +4,10 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+to_lowercase() {
+  printf '%s' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
 install_file() {
   local src="$1"
   local dest="$2"
@@ -48,17 +52,17 @@ read -r -p "Select (e.g. '1', '2', '1 2', or 'a' for all): " -a choices
 want_claude=false
 want_arch=false
 
-if [[ ${#choices[@]} -eq 0 ]]; then
+if [[ -z "${choices[*]:-}" ]]; then
   echo "Nothing selected. Exiting."
   exit 0
 fi
 
-for c in "${choices[@]}"; do
-  case "${c,,}" in
+for choice in "${choices[@]}"; do
+  case "$(to_lowercase "$choice")" in
     1|claude)  want_claude=true ;;
     2|arch)    want_arch=true ;;
     a|all)     want_claude=true; want_arch=true ;;
-    *)         echo "  Ignoring unknown selection: $c" ;;
+    *)         echo "  Ignoring unknown selection: $choice" ;;
   esac
 done
 
