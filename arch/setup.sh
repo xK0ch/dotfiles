@@ -6,12 +6,8 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 
 step() { echo; echo "==> $*"; }
 
-# ---------- prerequisites ----------
-
 step "Installing build prerequisites"
 sudo pacman -S --needed --noconfirm base-devel git
-
-# ---------- yay ----------
 
 step "Installing yay"
 if ! command -v yay &>/dev/null; then
@@ -23,8 +19,6 @@ fi
 
 step "Configuring yay"
 yay --answerclean All --answerdiff None --save && sed -i 's/"doubleconfirm": true/"doubleconfirm": false/' ~/.config/yay/config.json
-
-# ---------- packages ----------
 
 PKGS_UI=(
   kate dolphin ark kdegraphics-thumbnailers kimageformats libheif qt6-imageformats
@@ -91,20 +85,14 @@ sudo systemctl enable --now cups
 step "Installing scanner support"
 yay -S --needed --noconfirm "${PKGS_SCANNER[@]}"
 
-# ---------- Toshy ----------
-
 step "Installing Toshy (macOS-style keyboard shortcuts)"
 sh -c "$(curl -L https://raw.githubusercontent.com/RedBearAK/toshy/main/scripts/bootstrap.sh || wget -O - https://raw.githubusercontent.com/RedBearAK/toshy/main/scripts/bootstrap.sh)"
 
-# ---------- MangoHud ----------
-
 step "Configuring MangoHud"
-# Toggle overlay: Right Shift + F12
 mkdir -p "$HOME/.config/MangoHud"
 cp "config/MangoHud/MangoHud.conf" "$HOME/.config/MangoHud/MangoHud.conf"
 echo "Installed MangoHud config."
-
-# ---------- manual steps ----------
+echo "Toggle the overlay with Right Shift + F12."
 
 echo
 echo "Done."

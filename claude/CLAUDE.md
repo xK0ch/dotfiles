@@ -7,6 +7,19 @@
 - Use commas, parentheses, colons, or periods instead.
 - This rule applies regardless of language (German, English, etc.).
 
+## Code style
+
+- Never write comments, neither in code nor in configuration files (YAML, Dockerfiles, Jenkinsfiles, shell scripts, CSS and SCSS, HTML templates and similar). This includes doc comments.
+- Write code that explains itself instead: descriptive names for variables, functions, classes and files, and small well-named functions or constants wherever logic would otherwise need an explanation.
+- Do not add comments when editing existing files. Leave existing comments in place unless the user asks to remove them.
+- Lines that tools need to work, such as a shebang or a linter directive, are not comments in this sense.
+
+## Shell commands
+
+- When giving the user commands that open a file for editing, locally or on a server, always use `vim` (or `sudo vim`), never `nano` or another editor.
+- On systems that might not have vim yet (for example a fresh Debian), include its installation first (`apt install -y vim`).
+- Non-interactive edits with `tee`, heredocs or `sed` are fine; this rule is about editing a file by hand.
+
 ## Git workflow
 
 - Never run `git add`, `git commit`, or `git push` on your own. This rule applies to every project, including this one.
