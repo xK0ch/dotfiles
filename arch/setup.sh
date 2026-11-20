@@ -21,35 +21,39 @@ step "Configuring yay"
 yay --answerclean All --answerdiff None --save && sed -i 's/"doubleconfirm": true/"doubleconfirm": false/' ~/.config/yay/config.json
 
 PKGS_UI=(
-  kate dolphin ark kdegraphics-thumbnailers kimageformats libheif qt6-imageformats
-  kdesdk-thumbnailers ffmpegthumbs taglib icoutils libappimage kio-extras resvg
+  kate dolphin ark kdegraphics-thumbnailers libheif
+  kdesdk-thumbnailers ffmpegthumbs icoutils libappimage resvg
   okular gwenview klassy papirus-icon-theme
 )
 
 PKGS_UTILITY=(
   bitwarden fastfetch firefox libreoffice-still filezilla kcalc
-  isoimagewriter hunspell hunspell-de hunspell-en_us
+  isoimagewriter hunspell-de hunspell-en_us
   rsync partitionmanager dosfstools exfatprogs
 )
 
 PKGS_IPHONE=(
-  libimobiledevice usbmuxd
+  usbmuxd
 )
 
 PKGS_GAMING=(
-  mangohud minecraft-launcher teamspeak gamescope lact lib32-vulkan-radeon
+  lib32-vulkan-radeon steam mangohud minecraft-launcher teamspeak gamescope lact
 )
 
 PKGS_DEV=(
-  jdk25-openjdk jetbrains-toolbox nvm docker docker-compose github-cli claude-desktop
+  jdk25-openjdk jetbrains-toolbox nvm docker docker-compose docker-buildx github-cli claude-desktop
+)
+
+PKGS_NETWORK_DISCOVERY=(
+  avahi nss-mdns
 )
 
 PKGS_PRINTER=(
-  cups cups-filters cnijfilter2 system-config-printer
+  cups cnijfilter2 system-config-printer
 )
 
 PKGS_SCANNER=(
-  sane sane-airscan simple-scan skanlite
+  sane-airscan skanlite
 )
 
 step "Installing UI packages"
@@ -62,7 +66,6 @@ step "Installing iPhone support"
 yay -S --needed --noconfirm "${PKGS_IPHONE[@]}"
 
 step "Installing gaming packages"
-yay -S --needed steam
 yay -S --needed --noconfirm "${PKGS_GAMING[@]}"
 sudo systemctl enable --now lactd
 
@@ -77,6 +80,23 @@ sudo systemctl enable --now docker.service
 step "Configuring global git identity"
 git config --global user.name "Fynn Koch"
 git config --global user.email "mail@fynn-koch.de"
+
+step "Enabling network discovery for printer and scanner (.local hostnames)"
+yay -S --needed --noconfirm "${PKGS_NETWORK_DISCOVERY[@]}"
+if ! grep -q '^hosts:.*mdns_minimal' /etc/nsswitch.conf; then
+  sudo sed -i '/^hosts:/ s/ resolve / mdns_minimal [NOTFOUND=return] resolve /' /etc/nsswitch.conf
+fi
+grep '^hosts:' /etc/nsswitch.conf
+sudo systemctl enable --now avahi-daemon.service
+if sudo firewall-cmd --state &>/dev/null; then
+  if ! sudo firewall-cmd --permanent --query-service=mdns &>/dev/null; then
+    sudo firewall-cmd --permanent --add-service=mdns
+    sudo firewall-cmd --reload
+  fi
+  echo "firewalld services: $(sudo firewall-cmd --list-services)"
+else
+  echo "firewalld is not running, skipping mDNS firewall rule."
+fi
 
 step "Installing printer support"
 yay -S --needed --noconfirm "${PKGS_PRINTER[@]}"
@@ -106,7 +126,7 @@ echo "    Settings > Interface > Run at startup, launch args: -silent %U"
 echo "    Game launch args for Gamescope:"
 echo "      gamescope -W 2560 -H 1600 -r 75 --framerate-limit 75 --mangoapp --adaptive-sync --immediate-flips --hdr-enabled --hdr-debug-force-support --force-grab-cursor -- %command%"
 echo
-echo "  Printer: KDE Plasma > Printers > Add"
+echo "  Printer: KDE Plasma > Printers > Add, pick the auto-discovered Canon TS5000 (no manual IP needed)"
 echo
 echo "  Scanner: open Skanlite from KDE Plasma"
 echo
