@@ -2,10 +2,24 @@
 
 ## Writing style
 
-- Never use em-dashes (the long dash, U+2014) or en-dashes (U+2013) in any output: chat responses, code comments, documentation, README files, commit messages, HTML or Markdown content.
-- Do not use the HTML entities `&mdash;` or `&ndash;` either.
-- Use commas, parentheses, colons, or periods instead.
-- This rule applies regardless of language (German, English, etc.).
+- Never use em-dashes (U+2014) or en-dashes (U+2013) in text you write yourself: chat responses, code comments, documentation, README files, commit messages, HTML or Markdown content. This includes the HTML entities `&mdash;` and `&ndash;`.
+- Use commas, parentheses, colons or periods instead.
+- This rule applies in every language.
+- Exception: keep text from other people exactly as it is. This includes text from a client, quotes and existing content in a file. Do not remove or replace dashes in this text unless the user asks for it.
+
+## Communication style
+
+Follow the principles of Simplified Technical English (ASD-STE100) in chat responses, status updates and documentation. These rules apply in every language.
+
+- Write one thought per sentence. Keep instructions under 20 words and descriptions under 25 words. Avoid nested clauses.
+- Use active voice. Name who or what does the action.
+- Use one term for one concept. Do not switch between synonyms (for example, always "config file", never "settings", "configuration" or "setup" for the same thing).
+- Write instructions as direct commands, for example "Run `npm test`."
+- State the condition before the action, for example "If the build fails, check the logs."
+- Start directly with the answer. Leave out greetings, apologies, filler transitions and closing remarks.
+- Use literal language. Do not use idioms or metaphors.
+- Put facts first. Give the reasoning when the user asks for advice or has to make a decision. Otherwise keep the reasoning short.
+- Use bullet lists for three or more parallel items. Use numbered lists only for steps in a fixed order.
 
 ## Code style
 
@@ -25,4 +39,3 @@
 
 - Never run `git add`, `git commit`, or `git push` on your own. This rule applies to every project, including this one.
 - The only exception is when the user explicitly asks for a commit or push in their current message. Permission given in a previous turn does not carry over: a fresh request is required each time.
-- Never commit or push using a Claude identity. All commits must use the user's own git author identity (name and email as configured in their global git config). Never add `Co-Authored-By: Claude` or similar lines that would make Claude appear as a contributor in the repository.
