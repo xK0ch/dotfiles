@@ -7,6 +7,7 @@ cd "$(dirname "${BASH_SOURCE[0]}")"
 step() { echo; echo "==> $*"; }
 
 step "Installing build prerequisites"
+# base-devel (compiler, make, makepkg tools) and git are needed to build yay and every AUR package
 sudo pacman -S --needed --noconfirm base-devel git
 
 step "Installing yay"
@@ -21,39 +22,119 @@ step "Configuring yay"
 yay --answerclean All --answerdiff None --save && sed -i 's/"doubleconfirm": true/"doubleconfirm": false/' ~/.config/yay/config.json
 
 PKGS_UI=(
-  kate dolphin ark kdegraphics-thumbnailers libheif
-  kdesdk-thumbnailers ffmpegthumbs icoutils libappimage resvg
-  okular gwenview klassy papirus-icon-theme
+  # KDE text editor with syntax highlighting, tabs and an integrated terminal
+  kate
+  # KDE file manager
+  dolphin
+  # Archive manager for zip, tar, 7z and rar, also adds "Extract here" to Dolphin's context menu
+  ark
+  # Dolphin previews for PDF, PostScript, camera RAW and Blender files
+  kdegraphics-thumbnailers
+  # HEIC/HEIF support (iPhone photos) for Dolphin previews and Gwenview
+  libheif
+  # Dolphin previews for gettext translation files (.po)
+  kdesdk-thumbnailers
+  # Dolphin previews for video files
+  ffmpegthumbs
+  # Dolphin previews for .ico and .cur files and icons embedded in Windows .exe files
+  icoutils
+  # Dolphin shows the embedded icon of .AppImage files
+  libappimage
+  # Dolphin shows the app icon of Android .apk files (AUR)
+  kde-thumbnailer-apk
+  # Faster and more accurate SVG previews (turn off "SVG Images" under Dolphin > Configure > Previews)
+  resvg
+  # Document viewer for PDF, EPUB and more
+  okular
+  # Image viewer
+  gwenview
+  # Window decoration and application style theme (AUR)
+  klassy
+  # Icon theme
+  papirus-icon-theme
 )
 
 PKGS_UTILITY=(
-  bitwarden fastfetch firefox libreoffice-still filezilla kcalc
-  isoimagewriter hunspell-de hunspell-en_us
-  rsync partitionmanager dosfstools exfatprogs
+  # Password manager
+  bitwarden
+  # Shows system information in the terminal
+  fastfetch
+  # Web browser
+  firefox
+  # Office suite, "still" is the stable branch with fewer updates
+  libreoffice-still
+  # FTP and SFTP client
+  filezilla
+  # Calculator
+  kcalc
+  # Writes ISO images to USB sticks, e.g. a bootable Arch installer
+  isoimagewriter
+  # Spell checking dictionaries (German, US English) for KDE apps and LibreOffice
+  hunspell-de hunspell-en_us
+  # Fast file copying and syncing, locally and over SSH
+  rsync
+  # KDE tool to create, resize and format partitions
+  partitionmanager
+  # FAT32 and exFAT support to format and check USB sticks and SD cards, also used by partitionmanager
+  dosfstools exfatprogs
 )
 
 PKGS_IPHONE=(
+  # Talks to an iPhone over USB so Dolphin can open its photos
   usbmuxd
 )
 
 PKGS_GAMING=(
-  lib32-vulkan-radeon steam mangohud minecraft-launcher teamspeak gamescope lact
+  # 32-bit Vulkan driver for AMD GPUs, needed by Steam and Proton; listed before steam so yay does not ask which driver to use
+  lib32-vulkan-radeon
+  # Game store and launcher
+  steam
+  # In-game overlay for FPS, temperatures and load (config in config/MangoHud, toggle with Right Shift + F12)
+  mangohud
+  # Minecraft (AUR)
+  minecraft-launcher
+  # Voice chat (AUR)
+  teamspeak
+  # Valve's game compositor for resolution, frame limit and HDR, used in the Steam launch options below
+  gamescope
+  # AMD GPU control panel for fan curves, clocks and power limit, runs as the lactd service
+  lact
 )
 
 PKGS_DEV=(
-  jdk25-openjdk jetbrains-toolbox nvm docker docker-compose docker-buildx github-cli claude-desktop
+  # Java 25 for the Spring Boot services
+  jdk25-openjdk
+  # Installs and updates IntelliJ IDEA and other JetBrains IDEs (AUR)
+  jetbrains-toolbox
+  # Node Version Manager to install and switch Node.js versions for the UI projects
+  nvm
+  # Containers: engine, "docker compose" and the BuildKit builder used by "docker compose up --build"
+  docker docker-compose docker-buildx
+  # GitHub on the command line (gh)
+  github-cli
+  # Claude desktop app (AUR)
+  claude-desktop
 )
 
 PKGS_NETWORK_DISCOVERY=(
+  # Finds printers and scanners on the WLAN automatically and resolves .local hostnames
   avahi nss-mdns
 )
 
 PKGS_PRINTER=(
-  cups cnijfilter2 system-config-printer
+  # Printing system
+  cups
+  # Canon printer driver, includes the Canon TS5000 (AUR)
+  cnijfilter2
+  # Lets KDE detect the right driver when adding a printer
+  system-config-printer
 )
 
 PKGS_SCANNER=(
-  sane-airscan skanlite
+  # Scanning over WLAN (eSCL / AirScan), the printer's built-in scanner is supported
+  sane-airscan
+  # KDE scanning app
+  skanlite
 )
 
 step "Installing UI packages"
@@ -125,6 +206,12 @@ echo "  Steam:"
 echo "    Settings > Interface > Run at startup, launch args: -silent %U"
 echo "    Game launch args for Gamescope:"
 echo "      gamescope -W 2560 -H 1600 -r 75 --framerate-limit 75 --mangoapp --adaptive-sync --immediate-flips --hdr-enabled --hdr-debug-force-support --force-grab-cursor -- %command%"
+echo
+echo "  Dolphin file previews:"
+echo "    Menu > Configure Dolphin... > Interface > Previews"
+echo "    Tick every file type you want previews for (videos, PDFs, RAW, AppImage, APK, ...)"
+echo "    Untick \"SVG Images\" so the faster resvg previewer is used instead"
+echo "    Previews must also be switched on per view: Preview button in the toolbar (or View > Show Previews)"
 echo
 echo "  Printer: KDE Plasma > Printers > Add, pick the auto-discovered Canon TS5000 (no manual IP needed)"
 echo
