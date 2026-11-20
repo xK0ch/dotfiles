@@ -1,12 +1,5 @@
 # Personal preferences
 
-## Writing style
-
-- Never use em-dashes (U+2014) or en-dashes (U+2013) in text you write yourself: chat responses, code comments, documentation, README files, commit messages, HTML or Markdown content. This includes the HTML entities `&mdash;` and `&ndash;`.
-- Use commas, parentheses, colons or periods instead.
-- This rule applies in every language.
-- Exception: keep text from other people exactly as it is. This includes text from a client, quotes and existing content in a file. Do not remove or replace dashes in this text unless the user asks for it.
-
 ## Communication style
 
 Follow the principles of Simplified Technical English (ASD-STE100) in chat responses, status updates and documentation. These rules apply in every language.

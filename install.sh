@@ -36,6 +36,7 @@ install_claude() {
   echo "==> Installing Claude config"
   install_file "claude/CLAUDE.md" "$HOME/.claude/CLAUDE.md"
   install_file "claude/settings.json" "$HOME/.claude/settings.json"
+  install_file "claude/skills/humanizer/SKILL.md" "$HOME/.claude/skills/humanizer/SKILL.md"
 }
 
 install_arch() {
@@ -45,7 +46,7 @@ install_arch() {
 
 echo "Which components do you want to install?"
 echo
-echo "  1) claude  - Claude Code config (claude/CLAUDE.md, claude/settings.json)"
+echo "  1) claude  - Claude Code config (claude/CLAUDE.md, claude/settings.json, claude/skills/)"
 echo "  2) arch    - Arch Linux packages & services (arch/setup.sh)"
 echo
 read -r -p "Select (e.g. '1', '2', '1 2', or 'a' for all): " -a choices

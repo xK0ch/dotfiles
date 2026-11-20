@@ -8,6 +8,7 @@ My personal config files, version-controlled. Clone this repo and run `install.s
 |---|---|
 | `claude/CLAUDE.md` | Claude Code preferences, installed to `~/.claude/CLAUDE.md` |
 | `claude/settings.json` | Claude Code settings (no Claude attribution in commits and PRs), installed to `~/.claude/settings.json` |
+| `claude/skills/humanizer/SKILL.md` | Claude Code skill that keeps texts for human readers (emails, website copy, posts) free of typical AI patterns, in German and English. Installed to `~/.claude/skills/humanizer/SKILL.md`, call it with `/humanizer` |
 | `arch/setup.sh` | Arch Linux package installation and system setup |
 | `arch/config/MangoHud/MangoHud.conf` | MangoHud overlay config, installed to `~/.config/MangoHud/` |
 
@@ -22,7 +23,7 @@ cd ~/dotfiles
 `install.sh` is always the entry point:
 
 - Prompts which components to install. Pick one or several:
-  - `claude` deploys the Claude Code config (`claude/CLAUDE.md`, `claude/settings.json`).
+  - `claude` deploys the Claude Code config (`claude/CLAUDE.md`, `claude/settings.json`, `claude/skills/`).
   - `arch` runs `arch/setup.sh`, which installs all packages and enables services (Arch Linux only).
 - Enter numbers or names (e.g. `1`, `2`, `1 2`, `claude arch`), or `a` for all.
 - Backs up existing files before overwriting (look for `*.backup.YYYYMMDD-HHMMSS` next to the target).
